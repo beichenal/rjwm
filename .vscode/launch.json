@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-RgApplication<rg>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.rg.RgApplication",
+      "projectName": "rg",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
