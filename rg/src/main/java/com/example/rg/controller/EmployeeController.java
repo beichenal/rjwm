@@ -1,9 +1,10 @@
 package com.example.rg.controller;
 
+import java.time.LocalDateTime;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +49,34 @@ public class EmployeeController {
 
     return R.success(emp);
   }
+
+  /**
+   * 员工退出
+   * @param request
+   * @return
+   */
+  @PostMapping("/logout")
+  public R<String> logout (HttpServletRequest request){
+    request.getSession().removeAttribute("employee");
+    return R.success("退出成功");
+  }
+
+  @PostMapping
+  public R<String> save(HttpServletRequest request,@RequestBody Employee employee) {
+    employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+
+    employee.setCreateTime(LocalDateTime.now());
+    employee.setUpdateTime(LocalDateTime.now());
+
+    Long empId = (Long)request.getSession().getAttribute("employee");
+    employee.setCreateUser(empId);
+    employee.setUpdateUser(empId);
+    
+    log.info("新增员工: {}", employee.toString());
+    employeeService.save(employee);
+    return R.success("新增员工成功");
+  } 
+
+
+
 }
